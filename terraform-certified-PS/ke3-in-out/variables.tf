@@ -1,6 +1,20 @@
+/*
+variable "aws_access_key" {
+  type        = string
+  description = "AWS Access Key"
+  sensitive   = true
+}
+
+variable "aws_secret_key" {
+  type        = string
+  description = "AWS Secret Key"
+  sensitive   = true
+}
+*/
+
 variable "aws_region" {
   type        = string
-  description = "AWS region"
+  description = "Region for AWS Resources"
   default     = "eu-central-1"
 }
 
@@ -16,12 +30,11 @@ variable "vpc_cidr_block" {
   default     = "10.0.0.0/16"
 }
 
-variable "vpc_subnet1_cidr_block" {
-  type        = string
-  description = "CIDR Block for Subnet 1 in VPC"
-  default     = "10.0.0.0/24"
+variable "vpc_subnets_cidr_blocks" {
+  type        = list(string)
+  description = "CIDR Blocks for Subnets in VPC"
+  default     = ["10.0.0.0/24", "10.0.1.0/24"]
 }
-
 
 variable "map_public_ip_on_launch" {
   type        = bool
@@ -29,13 +42,11 @@ variable "map_public_ip_on_launch" {
   default     = true
 }
 
-
 variable "instance_type" {
   type        = string
-  description = "Type for EC2 Instnace"
+  description = "Type for EC2 Instance"
   default     = "t2.micro"
 }
-
 
 variable "company" {
   type        = string
@@ -52,4 +63,3 @@ variable "billing_code" {
   type        = string
   description = "Billing code for resource tagging"
 }
-
