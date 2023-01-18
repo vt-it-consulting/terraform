@@ -1,28 +1,17 @@
-
-terraform {
-  required_version = ">= 0.12"
-  required_providers {
-    azurerm = {
-      version = "3.39.1"
-    }
-  }
-}
-
-provider "azurerm"{
-  features {}
+provider "azurerm" {
+ features {}
 }
 
 variable "application_name" {
   description = "The name of application"
-  default = "Local-VARIABLES"
 }
+
 variable "environment_name" {
   description = "The name of environment"
-  default = "Development"
 }
+
 variable "country_code" {
   description = "The country code (FR-US-...)"
-  default = "DE"
 }
 
 locals {
@@ -31,5 +20,18 @@ locals {
 
 resource "azurerm_resource_group" "rg" {
   name     = "RG-${local.resource_name}"
-  location = "West Europe"
+  location = data.external.getlocation.result.location
+}
+
+
+data "external" "getlocation" {
+  program = ["Powershell.exe", "./GetLocation.ps1"]
+
+  query = {
+    environment = "${var.environment_name}"
+  }
+}
+
+output "locationname" {
+  value = data.external.getlocation.result.location
 }
